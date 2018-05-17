@@ -13,12 +13,14 @@ const words_de=[
   "Машина",
   "Пуля"
 ]
+const deftime = 30;
 //----------------------------------//
 
 //--------------APP----------------//
 var level=1;
 var timeoftimer;
 var arr= [];
+
 
 
 function getRandom(min, max){
@@ -108,12 +110,12 @@ export default class Attention extends Component {
      enc_word: decoding(this.state.enc_numbers)
    });
    level = 1;
-   timeoftimer=level*10
+   timeoftimer=Math.round(deftime/level)
    this.startTimer(timeoftimer)
  }
  
  componentDidUpdate(){
-    timeoftimer=level*10
+    timeoftimer=Math.round(deftime/level)
  }
  
  
