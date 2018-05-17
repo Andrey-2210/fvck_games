@@ -51,7 +51,7 @@ class App extends Component {
         {this.state.place === "word" &&
           <div className="body">
             <Word />
-            <OnLink name="Меню" link="menu"/>
+            <OnLink  name="Меню" link="menu"/>
           </div>
         }
 

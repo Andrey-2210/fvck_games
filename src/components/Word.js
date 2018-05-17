@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
-const msg_win="Ты победил,дружок!";
-const msg_lose="Попробуй снова ((!"
 const char_rplc= "_";
-const words = ["машина","люди","конструктор", "перфоратор"];
+const words = ["машина","люди","конструктор", "перфоратор"]; //Уровень 1
+const words2 = ["караганда","константинопль","уфа", "белгород"]; //Уровень 2
+const words3 = ["хуй","хуй","хуй", "хуй"]; //Уровень 3
 var char_to_win;
+var level;
+var life;
 
 function getRandom(min, max){
   return Math.floor(Math.random() * (max - min) + min);
@@ -14,10 +16,11 @@ export default class Word extends Component {
   constructor(props){
     super(props);
     this.state ={
-      new_word: "",
+      new_word : "",
       message : "",
-      value: "",
-      win: false
+      value : "",
+      win : false,
+      count: 0
     };
     this.handleChange=this.handleChange.bind(this);
     this.Check=this.Check.bind(this);
@@ -25,13 +28,27 @@ export default class Word extends Component {
 }
 
 componentDidMount(){
-  this.GetWord();
+    this.GetWord(words);
+    level = 1;
+    life = 3;
 }
 
-GetWord(){
+reset(){
+  console.log("word");
+  this.setState({
+    new_word : "",
+    message : "",
+    value : "",
+    win : false,
+    count: 0
+  });
+
+}
+
+GetWord(array){
   this.setState({value: ""});
   let rnd = Math.floor(Math.random() * words.length);
-  let curr = words[rnd];
+  let curr = array[rnd];
   let length = curr.length;
   let rnd_char = getRandom(0,length);
   char_to_win = curr.charAt(rnd_char);
@@ -40,30 +57,71 @@ GetWord(){
 }
 
 Check(){
-  if (this.state.win){
-    alert(this.state.message);
-    this.GetWord();
+
+  if (char_to_win.toLowerCase() === this.state.value.toLowerCase()){
+    this.setState({count : this.state.count+1});
   }else{
-    alert(this.state.message);
+    life -=1
   }
+
+  if (level===1){
+    this.GetWord(words);
+  }
+  if (level===2){
+    this.GetWord(words2);
+  }
+  if (level===3){
+    this.GetWord(words3);
+  }
+
+  if (life < 1 ){
+      alert("Попорбуй снова!");
+      life = 3;
+      if (level===3){
+        life = 1;
+      }
+  }
+
+}
+componentDidUpdate(){
+  if(this.state.count === 4){
+    if (level === 3){
+
+      level = 3;
+    }else{
+      level+=1;
+
+    }
+
+    life = 3;
+    if (level===2){
+      this.GetWord(words2);
+    }
+    if (level===3){
+      this.GetWord(words3);
+      life=1;
+    }
+    if (level===1){
+      this.GetWord(words);
+    }
+    this.setState({
+      count: 0
+    });
+
+   alert("Ты перешел на новый уровень!");
+
+ }
+}
+handleChange(event) {
+ this.setState({value: event.target.value});
 }
 
-handleChange(event) {
-  let val = event.target.value;
-  if (char_to_win.toLowerCase() === val.toLowerCase()){
-      this.setState({win : true});
-      this.setState({message: msg_win});
-  }else{
-     this.setState({win : false});
-     this.setState({message: msg_lose});
-  }
-
-   this.setState({value: val});
- }
 
   render() {
     return (
         <div className="body-this">
+        <h2>Текущий уровень: {level}</h2>
+        <p>Жизни: {life}</p>
         <p className="current-word">{this.state.new_word}</p>
           {this.state.new_word !== "" &&
             <div>

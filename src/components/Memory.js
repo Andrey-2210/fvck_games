@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
 import Item from './Item';
 
-var maxitems = 16; //Сколько клеток
+var maxitems = 4; //Сколько клеток
 
 const msg_win="Ты победил,дружок!";
-const time_see = 5000;
+var time_see = 2000;
+var level = 1;
+var styleGrid = {
+  width : ''
+}
 
 
 function initialItems(){
   let arr = [];
   let arr_sup =[];
+  if (level===1){
+    maxitems=4;
+    styleGrid = { width : '210px' };
+  }
+  if (level===2){
+    maxitems=16;
+    styleGrid = { width : '450px' };
+    time_see = 5000;
+  }
+  if (level===3){
+    maxitems=36;
+    styleGrid = { width : '940px' };
+    time_see = 10000;
+  }
   for (let i = 1;i<= maxitems/2; i++){
     arr[i] = { value: i, picked: false, flip: true};
     arr_sup[i] = { value: i, picked: false, flip: true};
@@ -22,7 +40,6 @@ function initialItems(){
 }
 
 function hideItems(array){
-  console.log(array);
   for (let i = 0;i<= maxitems-1; i++){
     array[i].flip = false;
   }
@@ -30,7 +47,6 @@ function hideItems(array){
 }
 
 export default class Memory extends Component {
-
   constructor(props){
     super(props);
     this.state ={
@@ -46,11 +62,14 @@ export default class Memory extends Component {
     }, time_see)
     this.renderItems = this.renderItems.bind(this);
     this.checkPick = this.checkPick.bind(this);
-    this.reset = this.reset.bind(this);
-
+    this.restart = this.restart.bind(this);
 }
 
-
+componentWillMount(){
+  level = 1;
+  maxitems=4;
+  this.restart();
+}
 
 checkPick(id,value){
   if (this.state.blocked){
@@ -80,7 +99,7 @@ checkPick(id,value){
     }
 }
 
-reset(){
+restart(){
   this.setState({
     items: initialItems(),
     bblocked: false,
@@ -93,7 +112,6 @@ reset(){
     })
   }, time_see)
 }
-
 renderItems(items) {
   return items.map((item, index) => {
     return (
@@ -111,7 +129,14 @@ renderItems(items) {
 componentDidUpdate(){
   if (this.state.ended === maxitems / 2){
     setTimeout(() => {
+      if (level <3){
+        level +=1;
+      }else{
+        level =3;
+      }
+
       alert(msg_win);
+      this.restart();
     }, 500);
   }
 }
@@ -120,9 +145,9 @@ componentDidUpdate(){
     return (
         <div className="body-this">
            <div>
-             <button onClick={this.reset}>Рестарт</button>
+             <button onClick={this.restart}>Рестарт</button>
            </div>
-           <div className="gameplace">
+           <div className="gameplace" style={styleGrid}>
             {this.renderItems(this.state.items)}
            </div>
         </div>
