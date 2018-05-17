@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import Alphabet from './Alphabet';
 
 
+//---------------Settings------------//
 const msg_win = "Ты прав,парень!"
 const msg_lose = "Попробуй еще раз("
-
-var arr= [];
-
+const msg_timeleft = "У тебя кончилось время,попробуй еще!"
 const words_de=[
   "Автомат",
   "Пулемет",
@@ -14,6 +13,13 @@ const words_de=[
   "Машина",
   "Пуля"
 ]
+//----------------------------------//
+
+//--------------APP----------------//
+var level=1;
+var timeoftimer;
+var arr= [];
+
 
 function getRandom(min, max){
   return Math.floor(Math.random() * (max - min) + min);
@@ -87,7 +93,9 @@ export default class Attention extends Component {
       words: initialWords(), 
       enc_numbers: encoding(getWord(words_de)),
       enc_word: null,
-      valueofinput: ""
+      valueofinput: "",
+      timeleft: null,
+      timer: null
     };
     
     this.handleChange=this.handleChange.bind(this);
@@ -99,6 +107,31 @@ export default class Attention extends Component {
    this.setState({
      enc_word: decoding(this.state.enc_numbers)
    });
+   level = 1;
+   timeoftimer=level*10
+   this.startTimer(timeoftimer)
+ }
+ 
+ componentDidUpdate(){
+    timeoftimer=level*10
+ }
+ 
+ 
+startTimer(timeleft){
+   clearInterval(this.state.timer);
+    let timer = setInterval(()=>{
+     var timeleft = this.state.timeleft - 1;     
+     if (timeleft < 0){
+       clearInterval(timer);
+       alert(msg_timeleft);
+       this.reset();
+     }     
+     this.setState({
+       timeleft: timeleft
+     })
+     
+   },1000)
+   return this.setState({timeleft: timeleft, timer: timer});
  }
 
 //Вывести таблицу букв и цифр
@@ -137,13 +170,16 @@ export default class Attention extends Component {
     words: initialWords(), 
     enc_numbers: encoding(getWord(words_de)),
     enc_word: null,
-    valueofinput: ""
+    valueofinput: "",
+    timeleft: 0
   });
   setTimeout(()=>{
     this.setState({
       enc_word: decoding(this.state.enc_numbers)
     });
+    this.startTimer(timeoftimer)
   },100)
+
  }
  
 handleChange(event) {
@@ -151,10 +187,23 @@ handleChange(event) {
  this.setState({valueofinput: val});
 }
 
+handleKeyPress = (event) => {
+  var code = event.keyCode || event.which;
+     if(code === 13) { 
+       console.log()
+     } 
+  }
+
 handleClick(){
   if (this.state.valueofinput.toLowerCase() === this.state.enc_word.join('').toLowerCase()){
     alert(msg_win);
     this.reset();
+    if (level < 3){
+      level +=1;
+    }else{
+      level = 3;
+    }
+
   }else{
     alert(msg_lose)
   }
@@ -165,6 +214,10 @@ handleClick(){
   render() {
     return (
         <div className="body-this">
+          <h2>Текущий уровень: {level}</h2>
+          <div className="timer">
+          <p>Времени осталось:</p> <span>{this.state.timeleft >= 0 && this.state.timeleft}</span>
+          </div>
           <div className="table-body">
             {this.renderWords(this.state.words)}
           </div>
@@ -174,10 +227,13 @@ handleClick(){
           </div>
           <div className="place_input">
           <input type="text"
+          autoFocus={true}
           value={this.state.valueofinput}
           onChange={this.handleChange}
+          onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
           />
-          <button onClick={this.handleClick}>Проверить</button>
+          <button onClick={this.handleClick} 
+          >Проверить</button>
           </div>
           {/*<div className="words">
            {this.state.enc_word != null &&

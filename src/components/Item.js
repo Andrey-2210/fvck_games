@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import classnames from 'classnames';
 
-var format = "jpg";
-var path_to_img = 'assets/img/';
+const format = "jpg";
+const path_to_img = 'assets/img/';
 
 export default class Item extends Component {
   constructor(props) {
@@ -29,8 +29,7 @@ export default class Item extends Component {
     return (
         <div className={classes} dataid={this.props.value} onClick={this.handleClick}>
         {!this.props.picked &&
-        this.props.flip && <img src={require('./../' + path_to_img + 'image-' + value + '.'+ format)} alt={this.props.value} />
-        }
+        this.props.flip && <img src={require('./../' + path_to_img + 'image-' + value + '.'+ format)} alt={this.props.value} />}
         {itemValue}
         </div>
     );

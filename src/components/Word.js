@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
 
+
+
+//--------------Settings-----------------//
 const char_rplc= "_";
+const msg_tryagain = "Попорбуй снова!";
+const msg_newlevel = "Ты перешел на новый уровень!";
+const msg_end = "Ты прошел игру!"
+
 const words = ["машина","люди","конструктор", "перфоратор"]; //Уровень 1
 const words2 = ["караганда","константинопль","уфа", "белгород"]; //Уровень 2
 const words3 = ["хуй","хуй","хуй", "хуй"]; //Уровень 3
+
+//-----------------------------------------//
+
+
+
+//-----------APP----------//
 var char_to_win;
 var level;
 var life;
@@ -33,8 +46,38 @@ componentDidMount(){
     life = 3;
 }
 
+componentDidUpdate(){
+  if(this.state.count === 4){
+    if (level === 3){
+      alert(msg_end);
+      level = 3;
+    }else{
+      level+=1;
+
+    }
+
+    life = 3;
+    if (level===2){
+      this.GetWord(words2);
+    }
+    if (level===3){
+      this.GetWord(words3);
+      life=1;
+    }
+    if (level===1){
+      this.GetWord(words);
+    }
+    this.setState({
+      count: 0
+    });
+
+   alert(msg_newlevel);
+
+ }
+}
+
+
 reset(){
-  console.log("word");
   this.setState({
     new_word : "",
     message : "",
@@ -75,7 +118,7 @@ Check(){
   }
 
   if (life < 1 ){
-      alert("Попорбуй снова!");
+      alert(msg_tryagain);
       life = 3;
       if (level===3){
         life = 1;
@@ -83,38 +126,12 @@ Check(){
   }
 
 }
-componentDidUpdate(){
-  if(this.state.count === 4){
-    if (level === 3){
 
-      level = 3;
-    }else{
-      level+=1;
-
-    }
-
-    life = 3;
-    if (level===2){
-      this.GetWord(words2);
-    }
-    if (level===3){
-      this.GetWord(words3);
-      life=1;
-    }
-    if (level===1){
-      this.GetWord(words);
-    }
-    this.setState({
-      count: 0
-    });
-
-   alert("Ты перешел на новый уровень!");
-
- }
-}
 handleChange(event) {
  this.setState({value: event.target.value});
 }
+
+
 
 
   render() {
@@ -126,8 +143,10 @@ handleChange(event) {
           {this.state.new_word !== "" &&
             <div>
               <input type="text"
+              autoFocus={true}
               value={this.state.value}
               onChange={this.handleChange}
+              onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
               />
               <button onClick={this.Check}>Проверить</button>
               <p className="subscribe">Введите букву которой не хватает.</p>

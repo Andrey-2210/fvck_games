@@ -97,3 +97,14 @@
 .codes span:nth-last-child(1){
   margin-right: 0;
 }
+
+.timer{
+
+}
+.timer p{
+  display: inline-block;
+}
+.timer span{
+  display: inline-block;
+  min-width: 20px
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './../css/App.css';
+import './../assets/css/App.css';
 import Word from './Word';
 import Memory from './Memory';
 import Attention from './Attention';

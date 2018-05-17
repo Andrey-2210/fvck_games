@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import Item from './Item';
 
-var maxitems = 4; //Сколько клеток
+
+//------------Settings-------------------//
 
 const msg_win="Ты победил,дружок!";
+
+//---------------------------------------//
+
+
+//---------------------APP---------------------//
 var time_see = 2000;
 var level = 1;
+var maxitems; 
 var styleGrid = {
   width : ''
 }
-
 
 function initialItems(){
   let arr = [];
@@ -65,11 +71,28 @@ export default class Memory extends Component {
     this.restart = this.restart.bind(this);
 }
 
+componentDidUpdate(){
+  if (this.state.ended === maxitems / 2){
+    setTimeout(() => {
+      if (level <3){
+        level +=1;
+      }else{
+        level =3;
+      }
+
+      alert(msg_win);
+      this.restart();
+    }, 500);
+  }
+}
+
 componentWillMount(){
   level = 1;
   maxitems=4;
   this.restart();
 }
+
+
 
 checkPick(id,value){
   if (this.state.blocked){
@@ -126,20 +149,7 @@ renderItems(items) {
   });
 }
 
-componentDidUpdate(){
-  if (this.state.ended === maxitems / 2){
-    setTimeout(() => {
-      if (level <3){
-        level +=1;
-      }else{
-        level =3;
-      }
 
-      alert(msg_win);
-      this.restart();
-    }, 500);
-  }
-}
 
   render() {
     return (
