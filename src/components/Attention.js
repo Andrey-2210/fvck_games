@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import Alphabet from './Alphabet';
+import { connect} from 'react-redux';
+import {  Link } from 'react-router-dom'
 
 
 //---------------Settings------------//
 const msg_win = "Ты прав,парень!"
 const msg_lose = "Попробуй еще раз("
 const msg_timeleft = "У тебя кончилось время,попробуй еще!"
-const words_de=[
-  "Автомат",
-  "Пулемет",
-  "Каша",
-  "Машина",
-  "Пуля"
-]
 const deftime = 30;
 //----------------------------------//
 
@@ -81,57 +76,58 @@ function initialWords(){
     if(!rnd_in_arr){
       let char = String.fromCharCode(j);
       arr[i] = { word: char, number: rnd};
-      j++;      
+      j++;
       i++;
     }
   }
   return arr;
 }
 
-export default class Attention extends Component {
+class Attention extends Component {
   constructor(props){
     super(props);
     this.state ={
-      words: initialWords(), 
-      enc_numbers: encoding(getWord(words_de)),
+      words: initialWords(),
+      enc_numbers: encoding(getWord(this.props.attention_words)),
       enc_word: null,
       valueofinput: "",
       timeleft: null,
       timer: null
-    };
-    
+    }
+
     this.handleChange=this.handleChange.bind(this);
     this.handleClick=this.handleClick.bind(this);
     this.reset=this.reset.bind(this);
  }
- 
+
  componentDidMount(){
    this.setState({
-     enc_word: decoding(this.state.enc_numbers)
+     enc_word: decoding(this.state.enc_numbers),
+     isMounted: true
    });
    level = 1;
    timeoftimer=Math.round(deftime/level)
    this.startTimer(timeoftimer)
  }
- 
+
  componentDidUpdate(){
     timeoftimer=Math.round(deftime/level)
  }
- 
- 
+
+
 startTimer(timeleft){
    clearInterval(this.state.timer);
     let timer = setInterval(()=>{
-     var timeleft = this.state.timeleft - 1;     
+     var timeleft = this.state.timeleft - 1;
      if (timeleft < 0){
        clearInterval(timer);
        alert(msg_timeleft);
        this.reset();
-     }     
+     }
      this.setState({
        timeleft: timeleft
      })
-     
+
    },1000)
    return this.setState({timeleft: timeleft, timer: timer});
  }
@@ -166,11 +162,11 @@ startTimer(timeleft){
      );
    });
  }
- 
+
  reset(){
   this.setState({
-    words: initialWords(), 
-    enc_numbers: encoding(getWord(words_de)),
+    words: initialWords(),
+    enc_numbers: encoding(getWord(this.props.attention_words)),
     enc_word: null,
     valueofinput: "",
     timeleft: 0
@@ -183,7 +179,7 @@ startTimer(timeleft){
   },100)
 
  }
- 
+
 handleChange(event) {
  let val = event.target.value;
  this.setState({valueofinput: val});
@@ -191,9 +187,9 @@ handleChange(event) {
 
 handleKeyPress = (event) => {
   var code = event.keyCode || event.which;
-     if(code === 13) { 
+     if(code === 13) {
        console.log()
-     } 
+     }
   }
 
 handleClick(){
@@ -234,14 +230,26 @@ handleClick(){
           onChange={this.handleChange}
           onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
           />
-          <button onClick={this.handleClick} 
+          <button onClick={this.handleClick}
           >Проверить</button>
           </div>
           {/*<div className="words">
            {this.state.enc_word != null &&
              this.renderDecodings(this.state.enc_word)}
           </div>*/}
+
+          <Link className="menu__link" to='/'>Меню</Link>
         </div>
     );
   }
 }
+
+export default connect(
+
+  state => ({
+    attention_words: state.attention_words
+  }),
+  dispatch => ({
+
+  })
+)(Attention)

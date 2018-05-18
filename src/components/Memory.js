@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Item from './Item';
+import {  Link } from 'react-router-dom'
 
 
 //------------Settings-------------------//
@@ -12,7 +13,7 @@ const msg_win="Ты победил,дружок!";
 //---------------------APP---------------------//
 var time_see = 2000;
 var level = 1;
-var maxitems; 
+var maxitems;
 var styleGrid = {
   width : ''
 }
@@ -159,7 +160,9 @@ renderItems(items) {
            </div>
            <div className="gameplace" style={styleGrid}>
             {this.renderItems(this.state.items)}
+
            </div>
+            <Link className="menu__link" to='/'>Меню</Link>
         </div>
     );
   }

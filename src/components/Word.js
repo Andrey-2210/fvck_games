@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect} from 'react-redux';
+import {  Link } from 'react-router-dom'
 
 
 //--------------Settings-----------------//
@@ -7,14 +8,7 @@ const char_rplc= "_";
 const msg_tryagain = "Попорбуй снова!";
 const msg_newlevel = "Ты перешел на новый уровень!";
 const msg_end = "Ты прошел игру!"
-
-const words = ["машина","люди","конструктор", "перфоратор"]; //Уровень 1
-const words2 = ["караганда","константинопль","уфа", "белгород"]; //Уровень 2
-const words3 = ["хуй","хуй","хуй", "хуй"]; //Уровень 3
-
 //-----------------------------------------//
-
-
 
 //-----------APP----------//
 var char_to_win;
@@ -25,7 +19,7 @@ function getRandom(min, max){
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export default class Word extends Component {
+class Word extends Component {
   constructor(props){
     super(props);
     this.state ={
@@ -41,7 +35,7 @@ export default class Word extends Component {
 }
 
 componentDidMount(){
-    this.GetWord(words);
+    this.GetWord(this.props.words.words_level_1);
     level = 1;
     life = 3;
 }
@@ -58,14 +52,14 @@ componentDidUpdate(){
 
     life = 3;
     if (level===2){
-      this.GetWord(words2);
+      this.GetWord(this.props.words.words_level_2);
     }
     if (level===3){
-      this.GetWord(words3);
+      this.GetWord(this.props.words.words_level_3);
       life=1;
     }
     if (level===1){
-      this.GetWord(words);
+      this.GetWord(this.props.words.words_level_1);
     }
     this.setState({
       count: 0
@@ -90,7 +84,7 @@ reset(){
 
 GetWord(array){
   this.setState({value: ""});
-  let rnd = Math.floor(Math.random() * words.length);
+  let rnd = Math.floor(Math.random() * array.length);
   let curr = array[rnd];
   let length = curr.length;
   let rnd_char = getRandom(0,length);
@@ -108,13 +102,13 @@ Check(){
   }
 
   if (level===1){
-    this.GetWord(words);
+    this.GetWord(this.props.words.words_level_1);
   }
   if (level===2){
-    this.GetWord(words2);
+    this.GetWord(this.props.words.words_level_2);
   }
   if (level===3){
-    this.GetWord(words3);
+    this.GetWord(this.props.words.words_level_3);
   }
 
   if (life < 1 ){
@@ -152,7 +146,17 @@ handleChange(event) {
               <p className="subscribe">Введите букву которой не хватает.</p>
             </div>
           }
+          <Link className="menu__link" to='/'>Меню</Link>
         </div>
     );
   }
 }
+export default connect(
+
+  state => ({
+    words: state.words
+  }),
+  dispatch => ({
+
+  })
+)(Word)
