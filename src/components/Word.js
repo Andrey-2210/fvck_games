@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import { connect} from 'react-redux';
 import {  Link } from 'react-router-dom'
-
+import {  Redirect} from 'react-router-dom';
 
 //--------------Settings-----------------//
 const char_rplc= "_";
@@ -27,7 +27,8 @@ class Word extends Component {
       message : "",
       value : "",
       win : false,
-      count: 0
+      count: 0,
+      namePlayer: ''
     };
     this.handleChange=this.handleChange.bind(this);
     this.Check=this.Check.bind(this);
@@ -38,6 +39,15 @@ componentDidMount(){
     this.GetWord(this.props.words.words_level_1);
     level = 1;
     life = 3;
+    if (localStorage.getItem('name')){
+      this.setState({
+        namePlayer: localStorage.getItem('name')
+      })
+    }else{
+      this.setState({
+        redirect: true
+      })
+    }
 }
 
 componentDidUpdate(){
@@ -47,7 +57,6 @@ componentDidUpdate(){
       level = 3;
     }else{
       level+=1;
-
     }
 
     life = 3;
@@ -124,13 +133,11 @@ Check(){
 handleChange(event) {
  this.setState({value: event.target.value});
 }
-
-
-
-
-  render() {
+render() {
     return (
         <div className="body-this">
+          {this.state.redirect && <Redirect to="/" /> }
+        <h3>Имя: {this.state.namePlayer}</h3>
         <h2>Текущий уровень: {level}</h2>
         <p>Жизни: {life}</p>
         <p className="current-word">{this.state.new_word}</p>

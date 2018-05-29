@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Alphabet from './Alphabet';
 import { connect} from 'react-redux';
-import {  Link } from 'react-router-dom'
+import {  Link } from 'react-router-dom';
+import {  Redirect} from 'react-router-dom';
 
 
 //---------------Settings------------//
@@ -92,7 +93,8 @@ class Attention extends Component {
       enc_word: null,
       valueofinput: "",
       timeleft: null,
-      timer: null
+      timer: null,
+      namePlayer: ''
     }
 
     this.handleChange=this.handleChange.bind(this);
@@ -108,6 +110,15 @@ class Attention extends Component {
    level = 1;
    timeoftimer=Math.round(deftime/level)
    this.startTimer(timeoftimer)
+   if (localStorage.getItem('name')){
+     this.setState({
+       namePlayer: localStorage.getItem('name')
+     })
+   }else{
+     this.setState({
+       redirect: true
+     })
+   }
  }
 
  componentDidUpdate(){
@@ -212,6 +223,8 @@ handleClick(){
   render() {
     return (
         <div className="body-this">
+          {this.state.redirect && <Redirect to="/" /> }
+        <h3>Имя: {this.state.namePlayer}</h3>
           <h2>Текущий уровень: {level}</h2>
           <div className="timer">
           <p>Времени осталось:</p> <span>{this.state.timeleft >= 0 && this.state.timeleft}</span>

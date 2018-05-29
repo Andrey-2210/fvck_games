@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Item from './Item';
-import {  Link } from 'react-router-dom'
+import {  Link } from 'react-router-dom';
+import {  Redirect} from 'react-router-dom';
 
 
 //------------Settings-------------------//
@@ -60,7 +61,8 @@ export default class Memory extends Component {
       items: initialItems(),
       bblocked: false,
       lastItem: null,
-      ended: 0
+      ended: 0,
+      namePlayer: ''
     };
     setTimeout(()=>{
       this.setState({
@@ -91,6 +93,17 @@ componentWillMount(){
   level = 1;
   maxitems=4;
   this.restart();
+}
+componentDidMount(){
+  if (localStorage.getItem('name')){
+    this.setState({
+      namePlayer: localStorage.getItem('name')
+    })
+  }else{
+    this.setState({
+      redirect: true
+    })
+  }
 }
 
 
@@ -155,6 +168,8 @@ renderItems(items) {
   render() {
     return (
         <div className="body-this">
+          {this.state.redirect && <Redirect to="/" /> }
+        <h3>Имя: {this.state.namePlayer}</h3>
            <div>
              <button onClick={this.restart}>Рестарт</button>
            </div>
