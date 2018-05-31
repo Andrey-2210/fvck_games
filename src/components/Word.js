@@ -137,23 +137,28 @@ render() {
     return (
         <div className="body-this">
           {this.state.redirect && <Redirect to="/" /> }
-        <h3>Имя: {this.state.namePlayer}</h3>
-        <h2>Текущий уровень: {level}</h2>
-        <p>Жизни: {life}</p>
-        <p className="current-word">{this.state.new_word}</p>
-          {this.state.new_word !== "" &&
-            <div>
-              <input type="text"
-              autoFocus={true}
-              value={this.state.value}
-              onChange={this.handleChange}
-              onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
-              />
-              <button onClick={this.Check}>Проверить</button>
-              <p className="subscribe">Введите букву которой не хватает.</p>
+          <h3>Имя: {this.state.namePlayer}</h3>
+          <h4>Текущий уровень: {level}</h4>
+          <p style={{marginBottom: "50px"}}>Жизни: {life}</p>
+            <div className="alert alert-primary current-word" role="alert">
+              {this.state.new_word}
             </div>
-          }
-          <Link className="menu__link" to='/'>Меню</Link>
+              {this.state.new_word !== "" &&
+                <div className="words">
+                  <div className="form-group">
+                  <input type="text"
+                  autoFocus={true}
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
+                  className="form-control"
+                  />
+                  <small className="form-text text-muted">Введите букву которой не хватает.</small>
+                  </div>
+                  <button className="btn btn-success" onClick={this.Check}>Проверить</button>
+                </div>
+              }
+              <Link className="btn btn-danger btn-sm" to='/'>Выход</Link>
         </div>
     );
   }

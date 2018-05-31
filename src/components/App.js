@@ -13,7 +13,6 @@ class App extends Component {
       return (
       <div className="App">
 
-
         <Switch>
           <Route path='/menu' component={Menu}/>
           <Route path='/words-game' component={Word}/>

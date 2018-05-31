@@ -34,13 +34,17 @@ componentDidMount(){
   }
   render(){
     return(
-      <Fragment>
+      <div className="signin">
         {this.state.redirect && <Redirect to="/menu" /> }
         <form onSubmit={this.handleSubmit.bind(this)}>
-            <input type="text" onChange={this.changeInput.bind(this)} value={this.state.nameInput} placeholder="Введите имя"/>
-          <button >Войти</button>
+            <div className="form-group">
+                <input type="text" onChange={this.changeInput.bind(this)} value={this.state.nameInput} className="form-control form-control-lg" placeholder="Введите имя"/>
+            </div>
+            <div className="text-center">
+                <button className="btn btn-primary">Старт</button>
+            </div>
         </form>
-    </Fragment>
+    </div>
     )
   }
 }

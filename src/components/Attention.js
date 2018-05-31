@@ -6,9 +6,9 @@ import {  Redirect} from 'react-router-dom';
 
 
 //---------------Settings------------//
-const msg_win = "Ты прав,парень!"
+const msg_win = "Победа!"
 const msg_lose = "Попробуй еще раз("
-const msg_timeleft = "У тебя кончилось время,попробуй еще!"
+const msg_timeleft = "У тебя кончилось время, попробуй еще!"
 const deftime = 30;
 //----------------------------------//
 
@@ -226,32 +226,33 @@ handleClick(){
           {this.state.redirect && <Redirect to="/" /> }
         <h3>Имя: {this.state.namePlayer}</h3>
           <h2>Текущий уровень: {level}</h2>
-          <div className="timer">
-          <p>Времени осталось:</p> <span>{this.state.timeleft >= 0 && this.state.timeleft}</span>
-          </div>
+
           <div className="table-body">
             {this.renderWords(this.state.words)}
           </div>
-
-          <div className="codes">
+          <div className="timer">
+          <p>Времени осталось:</p> <span>{this.state.timeleft >= 0 && this.state.timeleft}</span>
+          </div>
+          <div className="alert alert-primary" style={{marginTop: "20px"}}>
             {this.renderEncodings(this.state.enc_numbers)}
           </div>
-          <div className="place_input">
-          <input type="text"
-          autoFocus={true}
-          value={this.state.valueofinput}
-          onChange={this.handleChange}
-          onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
-          />
-          <button onClick={this.handleClick}
-          >Проверить</button>
+          <div className="words">
+              <input type="text"
+              autoFocus={true}
+              value={this.state.valueofinput}
+              onChange={this.handleChange}
+              onKeyPress={event => { if (event.key === 'Enter') { this.handleClick(); } } }
+              className="form-control"
+              />
+              <small className="form-text text-muted" >Введите расшифрованное слово.</small>
+              <button onClick={this.handleClick} className="btn btn-success" style={{marginTop: "20px", marginBottom: "50px"}}>Проверить</button>
           </div>
           {/*<div className="words">
            {this.state.enc_word != null &&
              this.renderDecodings(this.state.enc_word)}
           </div>*/}
 
-          <Link className="menu__link" to='/'>Меню</Link>
+          <Link className="btn btn-danger btn-sm" to='/'>Выход</Link>
         </div>
     );
   }

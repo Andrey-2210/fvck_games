@@ -6,7 +6,7 @@ import {  Redirect} from 'react-router-dom';
 
 //------------Settings-------------------//
 
-const msg_win="Ты победил,дружок!";
+const msg_win="Победа!";
 
 //---------------------------------------//
 
@@ -169,15 +169,15 @@ renderItems(items) {
     return (
         <div className="body-this">
           {this.state.redirect && <Redirect to="/" /> }
-        <h3>Имя: {this.state.namePlayer}</h3>
+          <h3>Имя: {this.state.namePlayer}</h3>
            <div>
-             <button onClick={this.restart}>Рестарт</button>
+             <button onClick={this.restart} className="btn btn-info btn-sm">Перезапустить</button>
            </div>
            <div className="gameplace" style={styleGrid}>
             {this.renderItems(this.state.items)}
 
            </div>
-            <Link className="menu__link" to='/'>Меню</Link>
+            <Link className="btn btn-danger btn-sm" to='/'>Выход</Link>
         </div>
     );
   }
