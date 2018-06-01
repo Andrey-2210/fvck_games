@@ -1,5 +1,5 @@
-import React, { Component,Fragment } from 'react';
-import {  Redirect} from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
 
 export default class Signin extends Component{
   constructor(props){

@@ -13,6 +13,6 @@ const initialAttention_words = [
     "англицизм"
 ]
 
-export default function attention_words(state = initialAttention_words, action){
-  return state;
+export default function attention_words(state = initialAttention_words, action) {
+    return state;
 }
