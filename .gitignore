@@ -21,3 +21,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /games-linux-x64
+/games-win32-x64
