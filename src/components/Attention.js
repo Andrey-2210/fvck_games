@@ -9,7 +9,7 @@ import { Redirect} from 'react-router-dom';
 const msg_win = "Победа!"
 const msg_lose = "Попробуй еще раз("
 const msg_timeleft = "У тебя кончилось время, попробуй еще!"
-const deftime = 30;
+const deftime = 60;
 //----------------------------------//
 
 //--------------APP----------------//
@@ -113,7 +113,19 @@ class Attention extends Component {
             isMounted: true
         });
         level = 1;
-        timeoftimer = Math.round(deftime / level)
+        switch (level) {
+            case 1:
+                timeoftimer = Math.round(deftime);
+                break;
+            case 2:
+                timeoftimer = Math.round(deftime-10);
+                break;
+            case 3:
+                timeoftimer = Math.round(deftime-20);
+                break;
+            default:
+                timeoftimer = Math.round(deftime);
+        }
         this.startTimer(timeoftimer)
         if (localStorage.getItem('name')) {
             this.setState({
@@ -127,7 +139,19 @@ class Attention extends Component {
     }
 
     componentDidUpdate() {
-        timeoftimer = Math.round(deftime / level)
+        switch (level) {
+            case 1:
+                timeoftimer = Math.round(deftime);
+                break;
+            case 2:
+                timeoftimer = Math.round(deftime-10);
+                break;
+            case 3:
+                timeoftimer = Math.round(deftime-20);
+                break;
+            default:
+                timeoftimer = Math.round(deftime);
+        }
     }
 
 
@@ -180,8 +204,7 @@ class Attention extends Component {
             words: initialWords(),
             enc_numbers: encoding(getWord(this.props.attention_words)),
             enc_word: null,
-            valueofinput: "",
-            timeleft: 0
+            valueofinput: ""
         });
         setTimeout(() => {
             this.setState({
