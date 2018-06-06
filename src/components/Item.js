@@ -24,12 +24,12 @@ export default class Item extends Component {
       {'item--picked': this.props.picked}
     );
     let value= this.props.value;
-    var imagestr = <img src={require('./../' + path_to_img + value + '.' + format)} alt={this.props.value} />
+    var imagestr = <img src={require('./../' + path_to_img + 'image-' + value + '.'+ format)} alt={this.props.value} />
     var itemValue = this.props.picked ? imagestr : '';
     return (
         <div className={classes} dataid={this.props.value} onClick={this.handleClick}>
         {!this.props.picked &&
-        this.props.flip && <img src={require('./../' + path_to_img + value + '.'+ format)} alt={this.props.value} />}
+        this.props.flip && <img src={require('./../' + path_to_img + 'image-' + value + '.'+ format)} alt={this.props.value} />}
         {itemValue}
         </div>
     );
